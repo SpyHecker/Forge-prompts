@@ -8,8 +8,8 @@ import { PromptLibrary } from "@/components/PromptLibrary";
 import { useSavedPrompts } from "@/lib/savedPrompts";
 
 const platformOptions: { id: Platform; label: string; icon: typeof MessageSquare; desc: string }[] = [
-  { id: "chatgpt", label: "Text", icon: MessageSquare, desc: "Written prompts" },
-  { id: "midjourney", label: "Image", icon: ImageIcon, desc: "Visual prompts" },
+  { id: "chatgpt", label: "Write", icon: MessageSquare, desc: "Structured prompts for writing, reasoning & analysis" },
+  { id: "midjourney", label: "Visualize", icon: ImageIcon, desc: "Descriptive prompts for image & visual generation" },
 ];
 
 const examples = [
@@ -96,8 +96,30 @@ const Index = () => {
           <div className="relative rounded-3xl glass-strong p-6 md:p-8">
             <div className="absolute inset-x-10 -top-px h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
-            {/* Platform selector */}
-            {/* Platform selector removed */}
+            {/* Purpose selector — icon-forward, no product names */}
+            <div className="mb-5 flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Purpose</span>
+              {platformOptions.map((opt) => {
+                const Icon = opt.icon;
+                const active = platform === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    onClick={() => setPlatform(opt.id)}
+                    title={opt.desc}
+                    aria-label={opt.desc}
+                    className={`group relative flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-300 ${
+                      active
+                        ? "border-primary/50 bg-primary/10 text-foreground shadow-[0_0_30px_hsl(var(--primary)/0.25)]"
+                        : "border-border/60 bg-secondary/30 text-muted-foreground hover:text-foreground hover:border-border"
+                    }`}
+                  >
+                    <Icon className={`h-4 w-4 transition-colors ${active ? "text-primary-glow" : ""}`} strokeWidth={2} />
+                    <span>{opt.label}</span>
+                  </button>
+                );
+              })}
+            </div>
 
             {/* Input */}
             <div className="relative">
