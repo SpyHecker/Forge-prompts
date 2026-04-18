@@ -7,8 +7,8 @@ import { useSavedPrompts } from "@/lib/savedPrompts";
 import { toast } from "sonner";
 
 const platformMeta = {
-  chatgpt: { label: "Text", Icon: MessageSquare },
-  midjourney: { label: "Image", Icon: ImageIcon },
+  chatgpt: { label: "Write", Icon: MessageSquare },
+  midjourney: { label: "Visualize", Icon: ImageIcon },
 };
 
 function timeAgo(ts: number) {
