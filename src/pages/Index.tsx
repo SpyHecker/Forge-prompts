@@ -97,27 +97,7 @@ const Index = () => {
             <div className="absolute inset-x-10 -top-px h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
             {/* Platform selector */}
-            <div className="mb-5 flex flex-wrap items-center gap-2">
-              <span className="mr-1 text-xs uppercase tracking-wider text-muted-foreground">Platform</span>
-              {platformOptions.map((opt) => {
-                const Icon = opt.icon;
-                const active = platform === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => setPlatform(opt.id)}
-                    className={`group relative flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                      active
-                        ? "border-primary/50 bg-primary/10 text-foreground shadow-[0_0_30px_hsl(var(--primary)/0.25)]"
-                        : "border-border/60 bg-secondary/30 text-muted-foreground hover:text-foreground hover:border-border"
-                    }`}
-                  >
-                    <Icon className={`h-3.5 w-3.5 transition-colors ${active ? "text-primary-glow" : ""}`} />
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
+            {/* Platform selector removed */}
 
             {/* Input */}
             <div className="relative">
