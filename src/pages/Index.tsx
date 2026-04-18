@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Sparkles, Wand2, Copy, Check, MessageSquare, ImageIcon, ArrowRight, Zap } from "lucide-react";
+import { Sparkles, Wand2, Copy, Check, MessageSquare, ImageIcon, ArrowRight, Zap, Bookmark, BookmarkCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { generatePrompts, type GeneratedPrompt, type Platform } from "@/lib/promptForge";
+import { PromptLibrary } from "@/components/PromptLibrary";
+import { useSavedPrompts } from "@/lib/savedPrompts";
 
 const platformOptions: { id: Platform; label: string; icon: typeof MessageSquare; desc: string }[] = [
   { id: "chatgpt", label: "ChatGPT", icon: MessageSquare, desc: "Conversational AI" },
@@ -23,6 +25,13 @@ const Index = () => {
   const [results, setResults] = useState<GeneratedPrompt[]>([]);
   const [loading, setLoading] = useState(false);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+  const { save, isSaved } = useSavedPrompts();
+
+  const handleSave = (r: GeneratedPrompt) => {
+    const saved = save({ title: r.title, prompt: r.prompt, platform, tags: r.tags });
+    if (saved) toast.success("Saved to library");
+    else toast.info("Already in your library");
+  };
 
   const handleForge = async () => {
     if (!idea.trim()) {
@@ -58,9 +67,12 @@ const Index = () => {
           </div>
           <span className="font-display text-lg font-semibold tracking-tight">PromptForge</span>
         </div>
-        <div className="hidden items-center gap-1 rounded-full glass px-3 py-1.5 text-xs text-muted-foreground sm:flex">
-          <Zap className="h-3 w-3 text-accent" />
-          <span>Powered by structured prompt engineering</span>
+        <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-1 rounded-full glass px-3 py-1.5 text-xs text-muted-foreground sm:flex">
+            <Zap className="h-3 w-3 text-accent" />
+            <span>Structured prompt engineering</span>
+          </div>
+          <PromptLibrary />
         </div>
       </header>
 
@@ -203,17 +215,30 @@ const Index = () => {
                           {r.title}
                         </h3>
                       </div>
-                      <button
-                        onClick={() => copy(r.prompt, idx)}
-                        className="rounded-lg border border-border/60 bg-secondary/40 p-2 text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-foreground"
-                        aria-label="Copy prompt"
-                      >
-                        {copiedIdx === idx ? (
-                          <Check className="h-4 w-4 text-accent" />
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleSave(r)}
+                          className={`rounded-lg border p-2 transition-all ${
+                            isSaved(r.prompt)
+                              ? "border-primary/50 bg-primary/15 text-primary-glow"
+                              : "border-border/60 bg-secondary/40 text-muted-foreground hover:border-primary/50 hover:bg-primary/10 hover:text-foreground"
+                          }`}
+                          aria-label="Save prompt"
+                        >
+                          {isSaved(r.prompt) ? <BookmarkCheck className="h-4 w-4" /> : <Bookmark className="h-4 w-4" />}
+                        </button>
+                        <button
+                          onClick={() => copy(r.prompt, idx)}
+                          className="rounded-lg border border-border/60 bg-secondary/40 p-2 text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-foreground"
+                          aria-label="Copy prompt"
+                        >
+                          {copiedIdx === idx ? (
+                            <Check className="h-4 w-4 text-accent" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
                     </header>
 
                     <div className="relative flex-1 overflow-hidden rounded-xl border border-border/40 bg-background/60 p-4">
