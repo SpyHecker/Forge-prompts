@@ -25,6 +25,13 @@ const Index = () => {
   const [results, setResults] = useState<GeneratedPrompt[]>([]);
   const [loading, setLoading] = useState(false);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+  const { save, isSaved } = useSavedPrompts();
+
+  const handleSave = (r: GeneratedPrompt) => {
+    const saved = save({ title: r.title, prompt: r.prompt, platform, tags: r.tags });
+    if (saved) toast.success("Saved to library");
+    else toast.info("Already in your library");
+  };
 
   const handleForge = async () => {
     if (!idea.trim()) {
@@ -208,17 +215,30 @@ const Index = () => {
                           {r.title}
                         </h3>
                       </div>
-                      <button
-                        onClick={() => copy(r.prompt, idx)}
-                        className="rounded-lg border border-border/60 bg-secondary/40 p-2 text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-foreground"
-                        aria-label="Copy prompt"
-                      >
-                        {copiedIdx === idx ? (
-                          <Check className="h-4 w-4 text-accent" />
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleSave(r)}
+                          className={`rounded-lg border p-2 transition-all ${
+                            isSaved(r.prompt)
+                              ? "border-primary/50 bg-primary/15 text-primary-glow"
+                              : "border-border/60 bg-secondary/40 text-muted-foreground hover:border-primary/50 hover:bg-primary/10 hover:text-foreground"
+                          }`}
+                          aria-label="Save prompt"
+                        >
+                          {isSaved(r.prompt) ? <BookmarkCheck className="h-4 w-4" /> : <Bookmark className="h-4 w-4" />}
+                        </button>
+                        <button
+                          onClick={() => copy(r.prompt, idx)}
+                          className="rounded-lg border border-border/60 bg-secondary/40 p-2 text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-foreground"
+                          aria-label="Copy prompt"
+                        >
+                          {copiedIdx === idx ? (
+                            <Check className="h-4 w-4 text-accent" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
                     </header>
 
                     <div className="relative flex-1 overflow-hidden rounded-xl border border-border/40 bg-background/60 p-4">
