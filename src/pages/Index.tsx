@@ -8,8 +8,8 @@ import { PromptLibrary } from "@/components/PromptLibrary";
 import { useSavedPrompts } from "@/lib/savedPrompts";
 
 const platformOptions: { id: Platform; label: string; icon: typeof MessageSquare; desc: string }[] = [
-  { id: "chatgpt", label: "ChatGPT", icon: MessageSquare, desc: "Conversational AI" },
-  { id: "midjourney", label: "Midjourney", icon: ImageIcon, desc: "AI Image Generation" },
+  { id: "chatgpt", label: "Text", icon: MessageSquare, desc: "Written prompts" },
+  { id: "midjourney", label: "Image", icon: ImageIcon, desc: "Visual prompts" },
 ];
 
 const examples = [
