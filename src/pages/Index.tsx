@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Sparkles, Wand2, Copy, Check, MessageSquare, ImageIcon, ArrowRight, Zap } from "lucide-react";
+import { Sparkles, Wand2, Copy, Check, MessageSquare, ImageIcon, ArrowRight, Zap, Bookmark, BookmarkCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { generatePrompts, type GeneratedPrompt, type Platform } from "@/lib/promptForge";
+import { PromptLibrary } from "@/components/PromptLibrary";
+import { useSavedPrompts } from "@/lib/savedPrompts";
 
 const platformOptions: { id: Platform; label: string; icon: typeof MessageSquare; desc: string }[] = [
   { id: "chatgpt", label: "ChatGPT", icon: MessageSquare, desc: "Conversational AI" },
@@ -58,9 +60,12 @@ const Index = () => {
           </div>
           <span className="font-display text-lg font-semibold tracking-tight">PromptForge</span>
         </div>
-        <div className="hidden items-center gap-1 rounded-full glass px-3 py-1.5 text-xs text-muted-foreground sm:flex">
-          <Zap className="h-3 w-3 text-accent" />
-          <span>Powered by structured prompt engineering</span>
+        <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-1 rounded-full glass px-3 py-1.5 text-xs text-muted-foreground sm:flex">
+            <Zap className="h-3 w-3 text-accent" />
+            <span>Structured prompt engineering</span>
+          </div>
+          <PromptLibrary />
         </div>
       </header>
 
